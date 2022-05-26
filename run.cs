@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 namespace run{
     class Program{
-      static void Main() {
-        int point;
-        point=0;
-        Car[] veiculo = new Car[6];
-        menu(point, veiculo);
+      static void Main(){//static para iniciar o game
+        int point;//var para guadar pontos 
+        point=0;//primeira quantidade de pontos
+        Car[] veiculo = new Car[6];//criando carro
+        menu(point, veiculo);//enviando tudo para o menu para nunca mais voltar
         
         Console.ReadKey();
       }
@@ -43,15 +43,15 @@ namespace run{
             };
         };*/
       }
-      static void menu(int ponto, Car[] vei){
-        write("\t\t----RUN GAME----");
-        write("\tpontos: "+ponto) ;
+      static void menu(int ponto, Car[] vei){//menu 1
+        write("\t\t----RUN GAME----");//titulo
+        write("\tpontos: "+ponto) ;//medidor de pontos
         write("\n\tDigite:");
         write("\t\t1) para jogar");
         write("\t\t0) para sair");
         sw(Console.ReadLine(), ponto, vei);
       }
-      static void menu2(int ponto, Car[] veiculo){
+      static void menu2(int ponto, Car[] veiculo){//menu 2
         write("\t\t----Menu----");
         write("\tpontos: "+ponto);
         write("\n\tDigite:");
@@ -61,41 +61,41 @@ namespace run{
         write("\t\t0) para sair");
         sw2(Console.ReadLine(), ponto, veiculo);
       }
-      static void write(string texto){
+      static void write(string texto){//função para escrever
         Console.WriteLine(texto);
       }
-      static void sw(string res, int ponts, Car[] veic){
+      static void sw(string res, int ponts, Car[] veic){//switch 1
         switch(res){
             case "1":
                 c();
-                menu2(ponts, veic);
+                menu2(ponts, veic);//menu dois
             break;
             case "0":
-                Environment.Exit(0); 
+                Environment.Exit(0);//fechar
             break;
             default:
                 c();
                 write("Digite algo valido\n");
-                menu(ponts, veic);
+                menu(ponts, veic);//retornar para o menu para recelecionar a opção correta
             break;
         }
       }
-      static void sw2(string res, int ponts, Car[] veic){
+      static void sw2(string res, int ponts, Car[] veic){//switch 2
         switch(res){
             case "1":
                 c();
-                ver(ponts, veic);
+                ver(ponts, veic);//ver veiculos
             break;
             case "2":
                 c();
-                criar(ponts, veic);
+                criar(ponts, veic); //criar veiculo
             break;
             case "3":
                 c();
-                menu(ponts, veic);
+                menu(ponts, veic);//retornar para o menu inicial
             break;
             case "0":
-                Environment.Exit(0); 
+                Environment.Exit(0);//fechar 
             break;
             default:
                 c();
@@ -104,10 +104,10 @@ namespace run{
             break;
         }
       }
-      static void c(){
+      static void c(){//função para limpar
         Console.Clear();
       }
-      static void criar(int ponto, Car[] veicu){
+      static void criar(int ponto, Car[] veicu){//criar
         c();
         string r;
         int lp;
@@ -131,14 +131,14 @@ namespace run{
             menu2(ponto, veicu);
         }
       }
-      static void ver(int ponto, Car[] veicu){
+      static void ver(int ponto, Car[] veicu){//mostrar veiculos
         int lp;
         string res;
         res= "";
         for(lp=0; lp<6; lp++){
             string ap;
-            ap = veicu[lp].getApar();
-            if(ap!=null){
+            if(veicu[lp] != null){
+                ap = veicu[lp].getApar();
                 res=res+"\n"+ap;
             }
         };
@@ -168,7 +168,7 @@ namespace run{
             {
                 this.vel = speed;
             }
-            //cami
+            //possição
             public string getN()
             {
                 return n;
@@ -178,7 +178,7 @@ namespace run{
                 this.n = linha;
             }
             
-        //run
+        //linha
         public string run(int percoreu){
             string ret;
             ret="";
