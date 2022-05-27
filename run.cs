@@ -144,10 +144,10 @@ namespace run{
                 string ap;
                 if(veicu[lp] != null){
                     ap = veicu[lp].getApar();
-                    res=res+"\n\n\tVeiculo "+(lp + 1)+"\n\n\t"+ap+"\n\t"+(veicu[lp].getVel())+"km/s\n\n\n";
+                    res=res+"\n\n\tVaga "+(lp + 1)+"\n\n\t"+ap+"\n\t"+(veicu[lp].getVel())+"km/s\n\n\n";
                 }
             };
-            write("\t\t----Garagem----");
+            write("\t\t----Garagem/estacionamento----");
             write(res);
             menu3(ponto, veicu);   
         }else{
@@ -175,12 +175,18 @@ namespace run{
             c();
             ver(ponto, veiculo);//retornar para a garragem
         }else if(int.Parse(res)>0 && int.Parse(res)<7){
-            veiculo[(int.Parse(res))- 1]=null;
-            c();
-            menu2(ponto, veiculo);//volar para o menu para impedir erro 
+            if(veiculo[int.Parse(res)- 1] != null){
+                veiculo[(int.Parse(res))- 1]=null;
+                c();
+                menu2(ponto, veiculo);//volar para o menu para impedir erro   
+            }else{
+                c();
+                write("veiculo selecionado não existe");
+                ver(ponto, veiculo);
+            }
         }else{
             c();
-            write("sigua o que foi pedido ao escolher a opição 2\n");
+            write("siga o que foi pedido ao escolher a opição 2\n");
             ver(ponto, veiculo);//retornar para a garragem para recelecionar a opção correta
         };
       }
@@ -193,24 +199,36 @@ namespace run{
         }else if(res=="0"){
             c();
             ver(ponto, veiculo);//retornar para a garragem
-        }else if(int.Parse(res)>0 && int.Parse(res)<7){
-            veiculo[(int.Parse(res))- 1].setVel(veiculo[(int.Parse(res))- 1].getVel() + 10);
-            ponto = ponto - 100;
-            c();
-            ver(ponto, veiculo);//volar para o menu para impedir erro 
+        }else if(int.Parse(res)>0 && int.Parse(res)<7){//aprimorar
+            if(veiculo[int.Parse(res)- 1] != null){
+                veiculo[(int.Parse(res))- 1].setVel(veiculo[(int.Parse(res))- 1].getVel() + 10);
+                if(ponto!=0){
+                    ponto = ponto - 100;
+                    c();
+                    ver(ponto, veiculo);//volar para garragem
+                }else{
+                    c();
+                    write("seus pontos para aprimorar acabaram!!");
+                    ver(ponto, veiculo);//volar para garragem
+                };
+            }else{
+                c();
+                write("veiculo selecionado não existe");
+                ver(ponto, veiculo);
+            };
         }else{
             c();
-            write("sigua o que foi pedido ao escolher a opição 2\n");
+            write("siga o que foi pedido ao escolher a opição 3\n");
             ver(ponto, veiculo);//retornar para a garragem para recelecionar a opção correta
         };
       }
       static void sw3(string res, int ponts, Car[] veic){
         switch(res){
             case "2":
-                sel(ponts, veic);//Selecionar o veiculo
+                sel(ponts, veic);//Selecionar o veiculo e excluir
             break;
             case "3":
-                sel2(ponts, veic);//Selecionar o veiculo
+                sel2(ponts, veic);//Selecionar o veiculo e aprimorar
             break;
             case "4":
                 c();
