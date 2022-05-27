@@ -7,11 +7,14 @@ namespace run{
     class Program{
       static void Main(){//static para iniciar o game
         int point;//var para guadar pontos 
-        point=0;//primeira quantidade de pontos
+        point=400;//primeira quantidade de pontos
         Car[] veiculo = new Car[6];//criando carro
         menu(point, veiculo);//enviando tudo para o menu para nunca mais voltar
         
         Console.ReadKey();
+      }
+      static void exit(){
+        Environment.Exit(0);
       }
       static void play(Car veiculo, int pont){
         /*int dist;
@@ -71,7 +74,7 @@ namespace run{
                 menu2(ponts, veic);//menu dois
             break;
             case "0":
-                Environment.Exit(0);//fechar
+                exit();//fechar
             break;
             default:
                 c();
@@ -95,7 +98,7 @@ namespace run{
                 menu(ponts, veic);//retornar para o menu inicial
             break;
             case "0":
-                Environment.Exit(0);//fechar 
+                exit();//fechar 
             break;
             default:
                 c();
@@ -118,7 +121,8 @@ namespace run{
                 veicu[lp]= new Car();
                 veicu[lp].setApar(r);
                 veicu[lp].setVel(60);
-                veicu[lp].setN("\n");
+                veicu[lp].setY(0);
+                veicu[lp].setX(30);
                 c();
                 write("veiculo criado");
                 menu2(ponto, veicu);
@@ -132,23 +136,102 @@ namespace run{
         }
       }
       static void ver(int ponto, Car[] veicu){//mostrar veiculos
-        int lp;
+        if(veicu[0] != null || veicu[1] != null || veicu[2] != null || veicu[3] != null || veicu[4] != null || veicu[5] != null){
+            int lp;
+            string res;
+            res= "";
+            for(lp=0; lp<6; lp++){
+                string ap;
+                if(veicu[lp] != null){
+                    ap = veicu[lp].getApar();
+                    res=res+"\n\n\tVeiculo "+(lp + 1)+"\n\n\t"+ap+"\n\t"+(veicu[lp].getVel())+"km/s\n\n\n";
+                }
+            };
+            write("\t\t----Garagem----");
+            write(res);
+            menu3(ponto, veicu);   
+        }else{
+            write("sua garragem não tem veiculos");
+            menu2(ponto, veicu);
+        }
+      }
+      static void menu3(int ponto, Car[] veiculo){
+        write("\tpontos: "+ponto);
+        write("\n\tDigite:");
+        write("\t\t1) para jogar com um veiculo");
+        write("\t\t2) para excluir um veiculo");
+        write("\t\t3) para aprimorar um veiculo");
+        write("\t\t4) para voltar para o menu");
+        write("\t\t0) para sair");
+        sw3(Console.ReadLine(), ponto, veiculo);
+      }
+      static void sel(int ponto, Car[] veiculo){
         string res;
-        res= "";
-        for(lp=0; lp<6; lp++){
-            string ap;
-            if(veicu[lp] != null){
-                ap = veicu[lp].getApar();
-                res=res+"\n"+ap;
-            }
+        write("escolha um carro digite 1 a 6 e caso que voltar digite 10 e 0 para sair");
+        res = Console.ReadLine();
+        if(res=="0"){
+            exit();//fechar
+        }else if(res=="0"){
+            c();
+            ver(ponto, veiculo);//retornar para a garragem
+        }else if(int.Parse(res)>0 && int.Parse(res)<7){
+            veiculo[(int.Parse(res))- 1]=null;
+            c();
+            menu2(ponto, veiculo);//volar para o menu para impedir erro 
+        }else{
+            c();
+            write("sigua o que foi pedido ao escolher a opição 2\n");
+            ver(ponto, veiculo);//retornar para a garragem para recelecionar a opção correta
         };
-        write(res);
+      }
+      static void sel2(int ponto, Car[] veiculo){
+        string res;
+        write("escolha um carro digite 1 a 6 e caso que voltar digite 10 e 0 para sair");
+        res = Console.ReadLine();
+        if(res=="0"){
+            exit();//fechar
+        }else if(res=="0"){
+            c();
+            ver(ponto, veiculo);//retornar para a garragem
+        }else if(int.Parse(res)>0 && int.Parse(res)<7){
+            veiculo[(int.Parse(res))- 1].setVel(veiculo[(int.Parse(res))- 1].getVel() + 10);
+            ponto = ponto - 100;
+            c();
+            ver(ponto, veiculo);//volar para o menu para impedir erro 
+        }else{
+            c();
+            write("sigua o que foi pedido ao escolher a opição 2\n");
+            ver(ponto, veiculo);//retornar para a garragem para recelecionar a opção correta
+        };
+      }
+      static void sw3(string res, int ponts, Car[] veic){
+        switch(res){
+            case "2":
+                sel(ponts, veic);//Selecionar o veiculo
+            break;
+            case "3":
+                sel2(ponts, veic);//Selecionar o veiculo
+            break;
+            case "4":
+                c();
+                menu2(ponts, veic);//voltar para o menu anterior
+            break;
+            case "0":
+                exit();//fechar
+            break;
+            default:
+                c();
+                write("Digite algo valido\n");
+                ver(ponts, veic);//retornar para o menu para recelecionar a opção correta
+            break;
+        }
       }
     }
     public class Car{
         public string apar;
         public int vel;
-        public string n;
+        public int x;
+        public int y;
         // statics
             //aparencia
             public string getApar()
@@ -157,7 +240,7 @@ namespace run{
             }
             public void setApar(string aparencia)
             {
-                this.apar = "\t\t\t\t\t\t"+aparencia;
+                this.apar = aparencia;
             }
             //velocidade
             public int getVel()
@@ -168,25 +251,21 @@ namespace run{
             {
                 this.vel = speed;
             }
-            //possição
-            public string getN()
+            //y
+            public int gety()
             {
-                return n;
+                return y;
             }
-            public void setN(string linha)
+            public void setY(int linha)
             {
-                this.n = linha;
+                this.y = linha;
             }
-            
-        //linha
-        public string run(int percoreu){
-            string ret;
-            ret="";
-            int lp;
-            for(lp=0; lp<percoreu; lp++){
-                ret = ret+this.n;
-            };
-            return ret;
-        }
+            //x
+            public void setX(int percoreu){
+                this.x = percoreu;
+            }
+            public int getX(){
+                return x;
+            }
     }
 }
